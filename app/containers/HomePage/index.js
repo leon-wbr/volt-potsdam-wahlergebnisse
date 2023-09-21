@@ -275,7 +275,7 @@ export default function HomePage() {
                 {wahlkreise?.compatibleErgebnisse ? 
                   wahlkreise.compatibleErgebnisse.map(key => {
                     const e = datasetsErgebnisse[key];
-                    return <option value={e.key}>{e.title}</option>;
+                    return <option value={e.key} key={key}>{e.title}</option>;
                 })
                 : (
                   <>

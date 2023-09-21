@@ -10,9 +10,9 @@ import '@babel/polyfill';
 
 // Import all the third party stuff
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 import history from 'utils/history';
 import { ChakraProvider } from '@chakra-ui/react'
 
@@ -39,17 +39,17 @@ const store = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app');
 
 const render = messages => {
-  ReactDOM.render(
+  const root = createRoot(MOUNT_NODE);
+  root.render(
     <Provider store={store}>
       <LanguageProvider messages={messages}>
-        <BrowserRouter history={history}>
+        <HashRouter history={history}>
           <ChakraProvider>
             <App />
           </ChakraProvider>
-        </BrowserRouter>
+        </HashRouter>
       </LanguageProvider>
-    </Provider>,
-    MOUNT_NODE,
+    </Provider>
   );
 };
 
@@ -75,11 +75,4 @@ if (!window.Intl) {
     });
 } else {
   render(translationMessages);
-}
-
-// Install ServiceWorker and AppCache in the end since
-// it's not most important operation and if main code fails,
-// we do not want it installed
-if (process.env.NODE_ENV === 'production') {
-  require('offline-plugin/runtime').install(); // eslint-disable-line global-require
 }
